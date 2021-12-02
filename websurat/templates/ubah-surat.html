@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="content-wrapper mt-3">
+    {% for pesan in messages %}
+    {% if pesan %}
+    <div class="alert alert-success" role="alert">{{pesan}}
+    </div>
+    {% endif %}
+    {% endfor %}
+    <div class="content">
+        <div class="container-sm">
+            <div class="card">
+                <h5 class="card-header bg-info">
+                    <div class="content-header">
+                        <div class="content-fluid">
+                            <div class="row mb-2">
+                                <div class="col-sm-6">
+                                    <h1><strong>Ubah Surat Keluar</strong></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h5>
+                <div class="card-body">
+                    <div class="content">
+                        <div class="container-fluid">
+                            <form action="{% url 'ubah_surat' surat.id %}" method="post">
+                                {% csrf_token %}
+                                {{form.as_p}}
+                                <button type="submit" class="btn btn-info">Simpan</button>
+                                <a href="/surat-keluar" class="btn btn-danger">Kembali</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="content-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><strong>Surat Keluar Akademi Teknologi Industri Dewantara Palopo</strong></h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="content">
+        <div class="content-fluid">
+            {% for pesan in messages %}
+            {% if pesan %}
+            <div class="alert alert-success">{{pesan}}
+            </div>
+            {% endif %}
+            {% endfor %}
+
+            <a href="{% url 'masuk' %}" class="btn btn-success float-right mb-3" role="button"> Login
+                <i class="bi bi-box-arrow-in-right"></i>
+            </a>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Tgl Surat</th>
+                        <th scope="col">Nomor Surat</th>
+                        <th scope="col">Jenis Surat</th>
+                        <th scope="col">Tujuan</th>
+                        <th scope="col">Perihal</th>
+                        <th scope="col">Mengetahui</th>
+                        <th scope="col">Arsip</th>
+                        <th scope="col">Ket</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for srt in surat %}
+                    <tr>
+                        <th scope="row">{{srt.id}}</th>
+                        <td>{{srt.tgl_surat}}</td>
+                        <td>{{srt.nomor_surat}}</td>
+                        <td>{{srt.jenis_surat}}</td>
+                        <td>{{srt.tujuan}}</td>
+                        <td>{{srt.perihal}}</td>
+                        <td>{{srt.mengetahui}}</td>
+                        <td>{{srt.arsip}}</td>
+                        <td>{{srt.ket}}</td>
+                    </tr>
+
+                    <div class="modal fade" id="hapus-{{srt.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Hapus</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Apakah Anda yakin ingin menghapus Nomor Surat <strong>{{srt.nomor_surat | upper}}</strong>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info" data-bs-dismiss="modal">Batal</button>
+                                    <a href="{% url 'hapus_surat' srt.id %}" type="button"
+                                        class="btn btn-danger">Hapus</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {%endfor%}
+                </tbody>
+            </table>
+
+            <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                    {% if surat.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1">&laquo; First </a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{surat.previous_page_number}}"> Prev</a>
+                    </li>
+                    {% endif %}
+                    {% if surat.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{surat.next_page_number}}">Next</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{surat.paginator.num_pages}}">Last &raquo;
+                        </a></li>
+                    {% endif %}
+                </ul>
+                <strong>{{surat}}</strong>
+            </div>
+
+
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info">
+                            <h5 class="modal-title">Input Surat Keluar</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/surat-keluar/" method="post">
+                                {% csrf_token %}
+                                {{form.as_p}}
+
+                                <button type="submit" class="btn btn-info">Simpan</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+
+                            <button class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
